@@ -2,6 +2,7 @@ import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 
 import swaggerFile from './swagger.json'
+console.log(swaggerFile)
 
 import { router } from './routes'
 
