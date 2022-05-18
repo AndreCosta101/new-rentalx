@@ -2,12 +2,11 @@ import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 
 import swaggerFile from './swagger.json'
-console.log(swaggerFile)
 
 import { router } from './routes'
 
 const app = express();
-
+console.log('RELOAD FUNCIONANDO')
 app.use(express.json());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
