@@ -1,3 +1,4 @@
+import { inject, injectable } from "tsyringe";
 import { AppError } from "../../../../shared/errors/AppError";
 import { ICreateCarDTO } from "../../dtos/ICreateCarDTO";
 import { Car } from "../../infra/typeorm/entities/Car";
@@ -14,9 +15,10 @@ interface IRequest {
 }
 
 
-
+@injectable()
 class CreateCarUseCase {
     constructor(
+        @inject('CarsRepository')
         private carRepository: ICarsRepository
     ){}
 
@@ -45,6 +47,7 @@ class CreateCarUseCase {
         brand,
         category_id,
         })
+        
 
         return car;
     }
