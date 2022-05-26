@@ -11,10 +11,12 @@ import swaggerFile from '../../../swagger.json'
 import '../typeorm';
 
 import "../../container";
+import createConnection from '../../infra/typeorm';
 
 import { router } from './routes'
 import { AppError } from '../../errors/AppError';
 
+createConnection();
 const app = express();
 
 app.use(express.json());
