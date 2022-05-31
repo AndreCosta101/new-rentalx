@@ -1,16 +1,22 @@
 import { AppError } from '../../../../shared/errors/AppError';
 import { CarsRepositoryInMemory } from '../../repositories/in-memory/CarsRepositoryInMemory';
+import { SpecificationsRepositoryInMemory } from '../../repositories/in-memory/SpecificationsRepositoryInMemory';
 import { CreateCarSpecificationUseCase } from './CreateCarSpecificationUseCase'
 
 let createCarSpecificationUseCase: CreateCarSpecificationUseCase;
 let carsRepositoryInMemory : CarsRepositoryInMemory;
-// let specificationsRepositoryInMemory : SpecificationsRepositoryInMemory;
+let specificationsRepositoryInMemory : SpecificationsRepositoryInMemory;
 
 describe('Create Car Specification', () => {
 
     beforeEach(() => {
         carsRepositoryInMemory = new CarsRepositoryInMemory();
-        createCarSpecificationUseCase = new CreateCarSpecificationUseCase(carsRepositoryInMemory);
+        specificationsRepositoryInMemory = new SpecificationsRepositoryInMemory();
+        createCarSpecificationUseCase = new CreateCarSpecificationUseCase(
+            carsRepositoryInMemory,
+            specificationsRepositoryInMemory
+            );
+
     })
 
     it('should not be able to add a new specification to an inexistent car', async () => {
@@ -30,10 +36,22 @@ describe('Create Car Specification', () => {
             license_plate : 'ABC - a234' ,
             fine_amount : 60 ,
             brand :  'Brand',
-            category_id : 'category' ,
+            category_id : 'category',
         });
-        const specifications_id = [ '54321']
 
-        await createCarSpecificationUseCase.execute({car_id: car.id, specifications_id})
+        const specification = await specificationsRepositoryInMemory.create({
+            name: 'test',
+            description: 'test'
+        })
+
+        const specifications_id = [specification.id]
+
+        const specificationsCars = await createCarSpecificationUseCase.execute({
+            car_id: car.id, specifications_id
+        })
+
+        expect(specificationsCars).toHaveProperty('specifications');
+        expect(specificationsCars.specifications.length).toBe(1);
+
     })
 })
