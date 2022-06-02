@@ -36,8 +36,8 @@ class CarsRepository implements ICarsRepository {
             id
         })
 
-       const savedCar =  await this.repository.save(car);
-       console.log(savedCar)
+      await this.repository.save(car);
+       
 
         return car;
     }
