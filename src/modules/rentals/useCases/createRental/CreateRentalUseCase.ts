@@ -18,12 +18,12 @@ interface IRequest {
 class CreateRentalUseCase {
 
     constructor(
+        @inject('CarsRepository')
+        private carsRepository: ICarsRepository,
         @inject('RentalsRepository')
         private rentalsRepository: IRentalsRepository,
         @inject('DayjsDateProvider')
         private dateProvider: IDateProvider,
-        @inject('CarsRepository')
-        private carsRepository: ICarsRepository
     ){}
 
 
