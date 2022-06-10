@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { IDateProvider } from "../../../../shared/container/providers/DateProvider/IDateProvider";
 import { AppError } from "../../../../shared/errors/AppError";
 import { ICarsRepository } from "../../../cars/repositories/ICarsRepository";
+import { Rental } from "../../infra/typeorm/entities/Rental";
 import { IRentalsRepository } from "../../repositories/IRentalsRepository";
 
 
@@ -23,35 +24,40 @@ class ReturningRentalUseCase {
     ){}
 
 
-    async execute({id, user_id} : IRequest) {
+    async execute({id, user_id} : IRequest): Promise<Rental> {
+        
         const rental = await this.rentalsRepository.findById(id);
-        const car = await this.carsRepository.findById(id)
-        let totalFee = 0;
-
+        const car = await this.carsRepository.findById(rental.car_id)
+        
         if(!rental) { throw new AppError('Rental does not exist.')}
+        
 
-        let chargedDays = this.dateProvider.compareInDays(
+        let daily = this.dateProvider.compareInDays(
             rental.start_date,
-            this.dateProvider.dateNow()
+            this.dateProvider.dateNow(),
         )
 
-        if(chargedDays <= 0){
-            chargedDays = 1
+
+        if(daily <= 0){
+            daily = 1
         }
 
-        const currentTime = this.dateProvider.dateNow();
 
-        const delay = this.dateProvider.compareInDays(currentTime, rental.expected_return_date)
+        const dateNow = this.dateProvider.dateNow();
 
+        const delay = this.dateProvider.calculateDelay(dateNow, rental.expected_return_date )
+
+        let total = 0;
         if(delay > 0) {
-            const fine = delay * car.fine_amount;
-            totalFee = fine;
+            const calculate_fine = delay * car.fine_amount;
+            total = calculate_fine;
         }
 
-        totalFee += chargedDays * car.daily_rate;
+        total += daily * car.daily_rate;
+        console.log('total = ', total)
 
         rental.end_date = this.dateProvider.dateNow();
-        rental.total = totalFee;
+        rental.total = total;
 
         await this.rentalsRepository.create(rental)
         await this.carsRepository.updateAvailable(car.id, true);

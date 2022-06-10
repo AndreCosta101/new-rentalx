@@ -7,6 +7,7 @@ interface IRentalsRepository {
     findOpenRentalByCar(car_id: string): Promise<Rental>;
     findOpenRentalByUser(car_id: string): Promise<Rental>;
     findById(id: string): Promise<Rental>;
+    findByUser(id: string): Promise<Rental[]>;
 }
 
 export { IRentalsRepository };
