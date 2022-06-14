@@ -12,6 +12,7 @@ class CarsRepositoryInMemory implements ICarsRepository {
         brand,
         category_id, 
         daily_rate,
+        available,
         description,
         fine_amount,
         name,
@@ -21,14 +22,14 @@ class CarsRepositoryInMemory implements ICarsRepository {
         const car =  new Car();
 
         Object.assign(car, {
+            id,
             brand,
             category_id, 
             daily_rate,
             description,
             fine_amount,
             name,
-            license_plate,
-            id
+            license_plate,           
         })
 
         this.cars.push(car);
@@ -68,6 +69,7 @@ class CarsRepositoryInMemory implements ICarsRepository {
     }
 
     async updateAvailable(id: string, available: boolean): Promise<void> {
+
        const index =  this.cars.findIndex(car => car.id === id)
        this.cars[index].available = available
     }

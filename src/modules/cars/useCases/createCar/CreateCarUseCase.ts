@@ -39,7 +39,7 @@ class CreateCarUseCase {
         }
 
         const car = await this.carRepository.create({
-                    name,
+        name,
         description,
         daily_rate,
         license_plate,

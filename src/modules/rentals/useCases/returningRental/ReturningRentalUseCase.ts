@@ -54,7 +54,6 @@ class ReturningRentalUseCase {
         }
 
         total += daily * car.daily_rate;
-        console.log('total = ', total)
 
         rental.end_date = this.dateProvider.dateNow();
         rental.total = total;

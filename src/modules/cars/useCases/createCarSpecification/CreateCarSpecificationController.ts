@@ -9,7 +9,6 @@ class CreateCarSpecificationController {
         const {specifications_id} = request.body;
 
         const createCarSpecificationUseCase = container.resolve(CreateCarSpecificationUseCase)
-        console.log(id)
 
         const cars = await createCarSpecificationUseCase.execute({car_id:id, specifications_id });
 
