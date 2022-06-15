@@ -30,6 +30,8 @@ Deve ser possível listar todos os carros disponíveis pelo nome do carro.
 **RN**
 O usuário não precisa estar logado no sistema
 
+
+
 # Cadastro de Especificação no carro
 
 **RF**
@@ -90,3 +92,15 @@ Deve ser possível realizar a busca de todos os alugueis para o usuário
 
 **RN**
 O usuário deve estar logado na aplicação.
+
+
+# Recuperar Senha
+
+**RF**
+- Deve ser possível o usuário recuperar a senha informando o email 
+- O usuário deve receber um email com o passo a passo para a recuperação da senha
+- O usuário deve conseguir inserir uma nova senha
+
+**RN**
+- O usuário precisa informar uma nova senha senha
+- O link enviado para a recuperação deve expirar em 3 horas
