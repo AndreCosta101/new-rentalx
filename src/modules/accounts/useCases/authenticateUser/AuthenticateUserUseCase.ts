@@ -57,7 +57,7 @@ class AuthenticateUserUseCase {
             expiresIn: auth.expires_in_token
         });
 
-
+        // o sign do JWT é apenar para criar o token. Poderia ser uma outra chave criptografada.
         const refresh_token = sign({email}, auth.secret_refresh_token, {
             subject: user.id,
             expiresIn: auth.expires_in_refresh_token
@@ -67,8 +67,8 @@ class AuthenticateUserUseCase {
 
         await this.usersTokensRepository.create({
             user_id: user.id,
-            refresh_token,
-            expires_date: refresh_token_expires_date
+            expires_date: refresh_token_expires_date,
+            refresh_token
         })
 
         const tokenReturn: IResponse = {

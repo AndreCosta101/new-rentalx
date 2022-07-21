@@ -22,9 +22,9 @@ class ResetUserPasswordUseCase {
         private usersRepository: IUsersRepository
     ){}
 
+
     async execute({token, password}: IRequest): Promise<void>{
         const userToken = await this.usersTokensRepository.findByRefreshToken(token);
-
         if(!userToken) throw new AppError('Invalid Token')
 
         if(this.dateProvider.compareIfBefore(

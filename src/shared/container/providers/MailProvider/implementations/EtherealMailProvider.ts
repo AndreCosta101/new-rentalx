@@ -10,25 +10,24 @@ class EtherealMailProvider implements IMailProvider {
   private client: Transporter;
 
   constructor() {
-    nodemailer
-        .createTestAccount()
-        .then((account) => {
-            
+    // nodemailer
+    //     .createTestAccount()
+    //     .then((account) => {
             const transporter = nodemailer.createTransport({
-            host: account.smtp.host,
-            port: account.smtp.port,
-            secure: account.smtp.secure,
-            auth: {
-                user: account.user,
-                pass: account.pass,
-            },
+              host: "smtp.mailtrap.io",
+              port: 2525,
+              auth: {
+                user: "e80806abd4e1af",
+                pass: "9a358539f385b5"
+              }
+            
             });
 
             this.client = transporter;
-      })
-      .catch((err) => console.error(err));
+      // })
+      // .catch((err) => console.error(err));
   }
-  
+
   async sendMail(
     to: string,
     subject: string,
@@ -39,8 +38,6 @@ class EtherealMailProvider implements IMailProvider {
     const templateParse = handlebars.compile(templateFileContent);
 
     const templateHTML = templateParse(variables);
-
-    console.log(this.client, 'THIS>CLIENT')
 
     const message = await this.client.sendMail({
       to,
